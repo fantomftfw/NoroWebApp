@@ -9,6 +9,7 @@ const nextConfig = {
 
     const domains = [
       clerkHost,
+      'img.clerk.com',
       'cdn.jsdelivr.net',
       'js.sentry-cdn.com',
       'browser.sentry-cdn.com',
@@ -25,6 +26,9 @@ const nextConfig = {
 
     const scriptSrc = ["'self'", "'unsafe-inline'", ...domains].join(' ');
     const connectSrc = ["'self'", ...domains].join(' ');
+    const imgSrc = ["'self'", "data:", ...domains].join(' ');
+    const styleSrc = ["'self'", "'unsafe-inline'"].join(' ');
+    const workerSrc = ["'self'", "blob:"].join(' ');
 
     return [
       {
@@ -32,7 +36,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: `default-src 'self' ${domains.join(' ')}; script-src ${scriptSrc}; connect-src ${connectSrc};`,
+            value: `default-src 'self'; script-src ${scriptSrc}; connect-src ${connectSrc}; img-src ${imgSrc}; style-src ${styleSrc}; worker-src ${workerSrc};`,
           },
         ],
       },
