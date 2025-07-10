@@ -5,12 +5,17 @@ const nextConfig = {
       throw new Error('Missing Clerk Publishable Key');
     }
     
-    const clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.split('_').pop();
+    let clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.split('_').pop();
     if (!clerkFrontendApi) {
       throw new Error('Invalid Clerk Publishable Key');
     }
     
-    const clerkHost = new URL(clerkFrontendApi).host;
+    // Decode if it's base64 encoded
+    if (clerkFrontendApi.endsWith('$')) {
+        clerkFrontendApi = Buffer.from(clerkFrontendApi, 'base64').toString('ascii');
+    }
+
+    const clerkHost = new URL(`https://${clerkFrontendApi}`).host;
 
     const domains = [
       clerkHost,
