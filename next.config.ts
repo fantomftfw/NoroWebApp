@@ -1,21 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async headers() {
-    if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
-      throw new Error('Missing Clerk Publishable Key');
+    if (!process.env.NEXT_PUBLIC_CLERK_DOMAIN) {
+      throw new Error('Missing NEXT_PUBLIC_CLERK_DOMAIN environment variable');
     }
     
-    let clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.split('_').pop();
-    if (!clerkFrontendApi) {
-      throw new Error('Invalid Clerk Publishable Key');
-    }
-    
-    // Decode if it's base64 encoded and remove the trailing '$'
-    if (clerkFrontendApi.endsWith('$')) {
-        clerkFrontendApi = Buffer.from(clerkFrontendApi.slice(0, -1), 'base64').toString('ascii');
-    }
-
-    const clerkHost = new URL(`https://${clerkFrontendApi}`).host;
+    const clerkHost = process.env.NEXT_PUBLIC_CLERK_DOMAIN;
 
     const domains = [
       clerkHost,
