@@ -10,9 +10,9 @@ const nextConfig = {
       throw new Error('Invalid Clerk Publishable Key');
     }
     
-    // Decode if it's base64 encoded
+    // Decode if it's base64 encoded and remove the trailing '$'
     if (clerkFrontendApi.endsWith('$')) {
-        clerkFrontendApi = Buffer.from(clerkFrontendApi, 'base64').toString('ascii');
+        clerkFrontendApi = Buffer.from(clerkFrontendApi.slice(0, -1), 'base64').toString('ascii');
     }
 
     const clerkHost = new URL(`https://${clerkFrontendApi}`).host;
