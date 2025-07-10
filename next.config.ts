@@ -1,9 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async headers() {
-    const clerkDomains = [
-      'beloved-stork-92.accounts.dev',
-      'beloved-stork-92.clerk.accounts.dev',
+    if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+      throw new Error('Missing Clerk Publishable Key');
+    }
+    
+    const clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.split('_').pop();
+    if (!clerkFrontendApi) {
+      throw new Error('Invalid Clerk Publishable Key');
+    }
+    
+    const clerkHost = new URL(clerkFrontendApi).host;
+
+    const domains = [
+      clerkHost,
       'cdn.jsdelivr.net',
       'js.sentry-cdn.com',
       'browser.sentry-cdn.com',
@@ -12,16 +22,14 @@ const nextConfig = {
       'scdn.clerk.com',
       'segapi.clerk.com',
       'clerk-telemetry.com',
-    ].map(host => `https://${host}`);
+      'api.stripe.com',
+      'maps.googleapis.com',
+      '*.js.stripe.com',
+      'js.stripe.com',
+    ].map(host => (host.startsWith('*') ? `*${host}` : `https://${host}`));
 
-    const stripeDomains = [
-      'https://api.stripe.com',
-      'https://maps.googleapis.com',
-      'https://*.js.stripe.com',
-      'https://js.stripe.com',
-    ];
-
-    const connectSrc = ["'self'", ...clerkDomains, ...stripeDomains].join(' ');
+    const scriptSrc = ["'self'", "'unsafe-inline'", ...domains].join(' ');
+    const connectSrc = ["'self'", ...domains].join(' ');
 
     return [
       {
@@ -29,8 +37,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            // Note: The nonce is handled by Next.js automatically
-            value: `default-src 'self' ${clerkDomains.join(' ')}; connect-src ${connectSrc};`,
+            value: `default-src 'self' ${domains.join(' ')}; script-src ${scriptSrc}; connect-src ${connectSrc};`,
           },
         ],
       },
