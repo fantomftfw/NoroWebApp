@@ -1,4 +1,4 @@
-import { getTasks, Task } from '@/lib/api/tasks';
+import { getTasks, Task } from '@/lib/api/server/tasks';
 
 /**
  * A React Server Component to fetch and display the list of tasks for today.

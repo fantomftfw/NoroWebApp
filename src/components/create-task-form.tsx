@@ -10,7 +10,7 @@ import {
   TaskInput,
   TASK_DIFFICULTY,
   TASK_TYPE,
-} from '@/lib/api/tasks';
+} from '@/lib/api/client/tasks';
 import { cn } from '@/lib/utils';
 
 // Reusable component for section headers
