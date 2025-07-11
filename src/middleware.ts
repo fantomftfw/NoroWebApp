@@ -1,21 +1,20 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// Define our public routes
-const isPublicRoute = createRouteMatcher([
+const isAllowedRoute = createRouteMatcher([
+  '/onboarding(.*)',
   '/sign-in(.*)',
   '/sign-up(.*)',
+  '/api/(.*)',
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-  // If the route is not public, protect it.
-  if (!isPublicRoute(req)) {
-    const { userId, redirectToSignIn } = await auth();
-    if (!userId) {
-      // If the user is not signed in, redirect them to the sign-in page.
-      // The `returnBackUrl` will redirect them back to the page they were
-      // trying to visit after they sign in.
-      return redirectToSignIn({ returnBackUrl: req.url });
-    }
+
+export default clerkMiddleware((auth, req: NextRequest) => {
+  // If the route is not an allowed route for the portfolio mode, 
+  // redirect to the start of onboarding.
+  if (!isAllowedRoute(req)) {
+    const onboardingUrl = new URL('/onboarding', req.url);
+    return NextResponse.redirect(onboardingUrl);
   }
 });
 

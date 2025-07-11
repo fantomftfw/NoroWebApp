@@ -24,8 +24,18 @@ const nextConfig = {
       'js.stripe.com',
     ].map(host => (host.startsWith('*') ? `*${host}` : `https://${host}`));
 
-    const scriptSrc = ["'self'", "'unsafe-inline'", ...domains].join(' ');
-    const connectSrc = ["'self'", ...domains].join(' ');
+    const scriptSrcDomains = [...domains];
+    if (process.env.NODE_ENV === 'development') {
+      scriptSrcDomains.push("'unsafe-eval'");
+    }
+
+    const connectSrcDomains = [...domains];
+    if (process.env.NODE_ENV === 'development') {
+      connectSrcDomains.push('http://localhost:3001');
+    }
+
+    const scriptSrc = ["'self'", "'unsafe-inline'", ...scriptSrcDomains].join(' ');
+    const connectSrc = ["'self'", ...connectSrcDomains].join(' ');
     const imgSrc = ["'self'", "data:", ...domains].join(' ');
     const styleSrc = ["'self'", "'unsafe-inline'"].join(' ');
     const workerSrc = ["'self'", "blob:"].join(' ');
@@ -36,7 +46,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: `default-src 'self'; script-src ${scriptSrc}; connect-src ${connectSrc}; img-src ${imgSrc}; style-src ${styleSrc}; worker-src ${workerSrc};`,
+            value: `default-src 'self'; script-src ${scriptSrc}; connect-src ${connectSrc}; img-src ${imgSrc}; style-src ${styleSrc}; worker-src ${workerSrc}; font-src 'self';`,
           },
         ],
       },
