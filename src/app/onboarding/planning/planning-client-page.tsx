@@ -307,9 +307,18 @@ export default function PlanningClientPage() {
                       
                       {/* Time and Checkbox */}
                       <div className="flex items-center gap-4">
-                        <span className="text-sm text-neutral-400 whitespace-nowrap">
-                          {sub.time}
-                        </span>
+                        <AnimatePresence>
+                          {showTimes && (
+                            <motion.div
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 + 0.5 }}
+                              className="text-sm text-neutral-400 whitespace-nowrap"
+                            >
+                              {sub.time}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                         <div
                           onClick={() => handleCompleteTask(index)}
                           className="w-6 h-6 rounded-full border-2 border-neutral-600 flex items-center justify-center cursor-pointer"
