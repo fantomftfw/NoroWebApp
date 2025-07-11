@@ -57,6 +57,11 @@ export default function PlanningClientPage() {
       }
 
       const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
       const loadedSubTasks = data.subTasks || [];
       
       const totalMinutes = loadedSubTasks.reduce((acc: number, sub: SubTask) => {
@@ -73,8 +78,9 @@ export default function PlanningClientPage() {
           title: `Let's make a plan for you, ${userName}`,
           subtitle: "I'll break down the task so we do one thing at a time"
       });
-    } catch {
-      setError('Sorry, I had trouble breaking down that task. Let’s try another one.');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(errorMessage);
       setMascotMessage({ title: 'Oops!', subtitle: 'Something went wrong.'});
     } finally {
       setIsLoading(false);

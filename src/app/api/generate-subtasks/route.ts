@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     console.error('Error generating sub-tasks:', error);
-    return NextResponse.json({ error: 'Failed to generate sub-tasks' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: `Failed to generate sub-tasks: ${errorMessage}` }, { status: 500 });
   }
 } 
