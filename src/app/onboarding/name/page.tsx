@@ -7,7 +7,6 @@ import { useState, useEffect, useRef } from 'react';
 export default function OnboardingNamePage() {
   const router = useRouter();
   const [name, setName] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -16,7 +15,6 @@ export default function OnboardingNamePage() {
     
     if (inputRef.current) {
       inputRef.current.focus();
-      setIsFocused(true);
     }
     
     return () => {
@@ -45,9 +43,6 @@ export default function OnboardingNamePage() {
       handleContinue();
     }
   };
-
-  const handleInputFocus = () => setIsFocused(true);
-  const handleInputBlur = () => setIsFocused(false);
 
   const isButtonEnabled = name.trim().length > 0;
 
@@ -107,7 +102,7 @@ export default function OnboardingNamePage() {
                 />
                 <div className="relative w-[352px]">
                   <p className="text-xl font-medium leading-[28px] tracking-[0.05em] text-white/80 whitespace-pre-line">
-                    Hi!{'\n'}I'm Noro. You don't have to do everything alone anymore.
+                    Hi!{'\n'}I&apos;m Noro. You don&apos;t have to do everything alone anymore.
                   </p>
                 </div>
               </div>
@@ -125,8 +120,6 @@ export default function OnboardingNamePage() {
                     value={name}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
-                    onFocus={handleInputFocus}
-                    onBlur={handleInputBlur}
                     placeholder="Type your name..."
                     className="flex-1 bg-transparent text-2xl font-normal leading-10 tracking-[0.05em] text-white placeholder:text-[#9D9D9D]/95 border-none outline-none min-w-0"
                   />

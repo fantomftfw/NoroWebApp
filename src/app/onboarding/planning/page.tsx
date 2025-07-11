@@ -4,44 +4,9 @@
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, TargetAndTransition, Variants } from 'framer-motion';
 import { Loader2, Layers, Check } from 'lucide-react';
 import Confetti from 'react-confetti';
-
-const random = (min: number, max: number) => Math.random() * (max - min) + min;
-
-const Sparkle = () => {
-  const color = '#6023E0';
-  const size = random(10, 20);
-  const path = `M${random(0,100)},${random(0,100)} C${random(0,100)},${random(0,100)} ${random(0,100)},${random(0,100)} ${random(0,100)},${random(0,100)} S${random(0,100)},${random(0,100)} ${random(0,100)},${random(0,100)} Z`;
-  const duration = random(1, 1.5);
-
-  return (
-    <motion.path
-      d={path}
-      fill={color}
-      initial={{ opacity: 0, pathLength: 0 }}
-      animate={{ opacity: [0, 1, 0], pathLength: [0, 1, 1] }}
-      transition={{ duration, ease: 'easeInOut' }}
-    />
-  );
-};
-
-const Sparkles = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="relative inline-block">
-      {children}
-      <div className="absolute inset-0 w-full h-full">
-        <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <Sparkle key={i} />
-          ))}
-        </svg>
-      </div>
-    </div>
-  );
-};
-
 
 interface SubTask {
   task: string;
@@ -109,7 +74,7 @@ export default function OnboardingPlanningPage() {
           title: `Let's make a plan for you, ${userName}`,
           subtitle: "I'll break down the task so we do one thing at a time"
       });
-    } catch (e) {
+    } catch (e: any) {
       setError('Sorry, I had trouble breaking down that task. Let’s try another one.');
       setMascotMessage({ title: 'Oops!', subtitle: 'Something went wrong.'});
     } finally {
@@ -191,18 +156,17 @@ export default function OnboardingPlanningPage() {
     }
   };
 
-  const mascotAnimControls = {
+  const mascotAnimControls: TargetAndTransition = {
     y: [0, -8, 0],
     scale: [1, 1.05, 1],
     rotate: [0, 3, -3, 3, 0],
+    transition: {
+      duration: 0.6,
+      ease: "easeInOut",
+    }
   };
 
-  const mascotTransition = {
-    duration: 0.6,
-    ease: "easeInOut",
-  };
-
-  const listVariants = {
+  const listVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -213,7 +177,7 @@ export default function OnboardingPlanningPage() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } },
   };
@@ -263,7 +227,6 @@ export default function OnboardingPlanningPage() {
             <motion.div 
                 className="w-[78px] h-[76px] rounded-2xl bg-[#2B282A] flex-shrink-0 flex items-center justify-center"
                 animate={animateMascot ? mascotAnimControls : {}}
-                transition={mascotTransition}
                 onAnimationComplete={() => setAnimateMascot(false)}
             >
               <Image src="/icons/mascot-happy.svg" alt="Noro Mascot" width={58} height={59} />

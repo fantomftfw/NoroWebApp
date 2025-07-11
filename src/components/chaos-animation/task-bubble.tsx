@@ -9,11 +9,6 @@ interface TaskBubbleProps {
 }
 
 const TaskBubble: React.FC<TaskBubbleProps> = ({ text, style, tailDirection }) => {
-  const tailClasses = {
-    left: 'after:left-4',
-    right: 'after:right-4',
-  };
-
   return (
     <motion.div
       layout

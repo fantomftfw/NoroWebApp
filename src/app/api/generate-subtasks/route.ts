@@ -1,8 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 
-// IMPORTANT: Move this to a .env.local file in a real application
-const GEMINI_API_KEY = 'AIzaSyB2TUPrXR8qQNcLselSNq8twBklnCU40a4';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY) {
   throw new Error('Missing GEMINI_API_KEY in environment variables');
@@ -33,16 +32,16 @@ export async function POST(req: NextRequest) {
     // Clean the response to ensure it's valid JSON
     const jsonString = text.replace(/```json/g, '').replace(/```/g, '').trim();
     
-    let subTasks = JSON.parse(jsonString);
+    const subTasks = JSON.parse(jsonString);
 
     if (!Array.isArray(subTasks) || subTasks.length === 0 || !subTasks[0].task || !subTasks[0].time) {
         throw new Error('Invalid response format from AI');
     }
 
     // Prepend the guaranteed low-effort task
-    subTasks.unshift({ task: "Take a deep breath", time: "1 min" });
+    const finalSubTasks = [{ task: "Take a deep breath", time: "1 min" }, ...subTasks];
 
-    return NextResponse.json({ subTasks });
+    return NextResponse.json({ subTasks: finalSubTasks });
 
   } catch (error) {
     console.error('Error generating sub-tasks:', error);

@@ -10,7 +10,6 @@ export default function OnboardingAvoidingTaskPage() {
   const searchParams = useSearchParams();
   const [name, setName] = useState('');
   const [task, setTask] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -26,7 +25,6 @@ export default function OnboardingAvoidingTaskPage() {
     
     if (inputRef.current) {
       inputRef.current.focus();
-      setIsFocused(true);
     }
     
     return () => {
@@ -55,9 +53,6 @@ export default function OnboardingAvoidingTaskPage() {
       handleContinue();
     }
   };
-
-  const handleInputFocus = () => setIsFocused(true);
-  const handleInputBlur = () => setIsFocused(false);
 
   const isButtonEnabled = task.trim().length > 0;
 
@@ -116,10 +111,10 @@ export default function OnboardingAvoidingTaskPage() {
                 />
                 <div className="flex flex-col gap-2.5">
                   <p className="text-xl font-medium leading-[1.4] tracking-wide text-white/80">
-                    What’s that one thing {name}, that you have been avoiding lately?
+                    What&apos;s that one thing {name}, that you have been avoiding lately?
                   </p>
                   <p className="text-sm font-normal leading-[1.57] tracking-wide text-white/60">
-                    Don't worry about how big it feels - I'll break it down
+                    Don&apos;t worry about how big it feels - I&apos;ll break it down
                   </p>
                 </div>
               </div>
@@ -134,8 +129,6 @@ export default function OnboardingAvoidingTaskPage() {
                     value={task}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
-                    onFocus={handleInputFocus}
-                    onBlur={handleInputBlur}
                     placeholder="Declutter my desk"
                     className="flex-1 bg-transparent text-2xl font-normal leading-[1.67] tracking-wide text-white/95 placeholder:text-[#9D9D9D]/95 border-none outline-none"
                   />

@@ -48,7 +48,7 @@ export const CreateTaskForm = () => {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
-  const [taskType, setTaskType] = useState<TaskInput['type']>(
+  const [taskType] = useState<TaskInput['type']>(
     TASK_TYPE.PLANNED
   );
 

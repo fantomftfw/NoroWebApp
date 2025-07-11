@@ -70,7 +70,7 @@ export default function OnboardingPage() {
 
           {/* Greeting Text */}
           <p className="text-lg font-medium leading-6 tracking-[.02em] text-[#F4F1F8] mb-8 max-w-[280px]">
-            Hi! I'm Noro. You don't have to do everything alone anymore.
+            Hi! I&apos;m Noro. You don&apos;t have to do everything alone anymore.
           </p>
 
           {/* Main Heading */}
@@ -86,7 +86,7 @@ export default function OnboardingPage() {
               onClick={handleBegin}
               className="h-[54px] w-full rounded-xl bg-white text-lg font-semibold tracking-[.02em] text-[#6023E0] transition-colors hover:bg-gray-200 mb-4"
             >
-              Let's begin
+              Let&apos;s begin
             </button>
             <button
               onClick={handleSignIn}

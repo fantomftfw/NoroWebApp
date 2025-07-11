@@ -12,15 +12,14 @@ import { TaskList } from '@/components/task-list';
 
 // Helper for formatting date
 const getFormattedDate = () => {
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-  };
   const today = new Date();
   const day = new Intl.DateTimeFormat('en-US', { day: 'numeric' }).format(today);
-  const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(today);
-  const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(today);
+  const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(
+    today
+  );
+  const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(
+    today
+  );
   return { day, weekday, month };
 };
 
@@ -48,7 +47,7 @@ export default function HomePage() {
 
         <section className="mt-4">
           <div className="mb-4 flex items-center justify-between px-4">
-            <h2 className="text-lg font-semibold text-neutral-300">Today's goals</h2>
+            <h2 className="text-lg font-semibold text-neutral-300">Today&apos;s goals</h2>
             <button>
               <Image src="/icons/filter.svg" alt="Filter" width={24} height={24} />
             </button>
