@@ -74,7 +74,7 @@ export default function OnboardingPlanningPage() {
           title: `Let's make a plan for you, ${userName}`,
           subtitle: "I'll break down the task so we do one thing at a time"
       });
-    } catch (e: any) {
+    } catch {
       setError('Sorry, I had trouble breaking down that task. Let’s try another one.');
       setMascotMessage({ title: 'Oops!', subtitle: 'Something went wrong.'});
     } finally {
