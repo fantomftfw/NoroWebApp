@@ -281,57 +281,58 @@ export default function PlanningClientPage() {
           )}
 
           {!isLoading && !error && (
-            <motion.ul
-              className="w-full space-y-3"
-              variants={listVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {subTasks.map((sub, index) => (
-                <motion.li key={index} variants={itemVariants}>
-                  <div className="bg-[#2B282A] rounded-xl p-4 flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <motion.button 
-                        className="w-8 h-8 rounded-full border-2 flex items-center justify-center flex-shrink-0"
-                        style={{
-                          borderColor: completedTasks[index] ? '#7C3AED' : '#555',
-                          backgroundColor: completedTasks[index] ? '#7C3AED' : 'transparent'
-                        }}
-                        onClick={() => handleCompleteTask(index)}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                         <AnimatePresence>
-                          {completedTasks[index] && (
-                            <motion.div
-                              initial={{ scale: 0, rotate: -90 }}
-                              animate={{ scale: 1, rotate: 0 }}
-                              exit={{ scale: 0, rotate: 90 }}
-                            >
-                              <Check size={20} className="text-white" />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.button>
+            <div className="flex flex-col gap-2 w-full">
+              <motion.div 
+                className="flex items-center gap-2 text-[#C6A9FB]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Layers size={20} />
+                <h2 className="text-xl font-bold leading-tight">Your plan</h2>
+              </motion.div>
+              <motion.ul
+                className="w-full space-y-3"
+                variants={listVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {subTasks.map((sub, index) => (
+                  <motion.li key={index} variants={itemVariants}>
+                    <div className="bg-[#2B282A] rounded-xl p-4 flex items-center justify-between gap-4">
+                      {/* Task Text */}
                       <p className={`text-white/90 transition-all ${completedTasks[index] ? 'line-through text-white/50' : ''}`}>
                         {sub.task}
                       </p>
-                    </div>
-                    <AnimatePresence>
-                      {showTimes && (
-                        <motion.div
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 + 0.5 }}
-                          className="text-sm text-neutral-400 whitespace-nowrap"
-                        >
+                      
+                      {/* Time and Checkbox */}
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm text-neutral-400 whitespace-nowrap">
                           {sub.time}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.li>
-              ))}
-            </motion.ul>
+                        </span>
+                        <div
+                          onClick={() => handleCompleteTask(index)}
+                          className="w-6 h-6 rounded-full border-2 border-neutral-600 flex items-center justify-center cursor-pointer"
+                        >
+                          <AnimatePresence>
+                            {completedTasks[index] && (
+                              <motion.div
+                                className="w-full h-full rounded-full bg-purple-500 border-2 border-purple-400 flex items-center justify-center"
+                                initial={{ scale: 0, rotate: -90 }}
+                                animate={{ scale: 1, rotate: 0 }}
+                                exit={{ scale: 0, rotate: 90 }}
+                              >
+                                <Check size={16} className="text-white" />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </div>
           )}
 
         </div>
